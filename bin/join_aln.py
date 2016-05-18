@@ -7,12 +7,17 @@ import sys
 
 parser = argparse.ArgumentParser(description='Concatenate aligned sequences')
 
-parser.add_argument('infiles', type=argparse.FileType('r'),nargs='+')
+parser.add_argument('--min-seqs',  metavar='minseqs', type=int,default=44)
+parser.add_argument('--min-ident',  metavar='minident', type=float,default=0.9)
+
+parser.add_argument('infiles',type=str,nargs='+')
+
 
 args = parser.parse_args()
-# print(args.accumulate(args.integers))
 
-os.environ['PATH'] = '/Users/icooke/Projects/carla_loci/bin/'
+bindir,file = os.path.split(os.path.realpath(__file__))
+
+os.environ['PATH'] = bindir
 
 
 def read_fasta(fp):
@@ -42,10 +47,11 @@ def num_seqs(fp):
 sequences = {} # Master dict of all sequences in all files
 files = {} # Lengths (should be fixed) of sequences in each file
 
+for fn in args.infiles:
 
-for fp in args.infiles:
+    fp = open(fn,'r')
 
-    if ( (percent_identical(fp) < 0.9) or (num_seqs(fp) < 44 )):
+    if ( (percent_identical(fp) < args.min_ident) or (num_seqs(fp) < args.min_seqs )):
         sys.stderr.write('Skipping alignment for '+fp.name+' '+  str(num_seqs(fp)) + '\n')
     else:
         fp_len = 0

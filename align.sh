@@ -10,6 +10,6 @@ for f in `ls $aln_dir/*_alignable.fasta`;do
 done
 
 
-./bin/join_aln.py $aln_dir/*_aln.fasta > joined.fasta
+./bin/join_aln.py --min-seqs 44 --min-ident 0.9 $aln_dir/*_aln.fasta > joined.fasta
 
 
