@@ -33,14 +33,14 @@ def read_fasta(fp):
 
 
 def percent_identical(fp):
-    op = subprocess.run(['aln_percentage.sh',fp.name],check=True,stdout = subprocess.PIPE)
-    return(float(op.stdout.decode()))
+    op = subprocess.check_output(['aln_percentage.sh',fp.name])
+    return(float(op.decode()))
     # return(call(['aln_percentage.sh',fp.name]))
 
 
 def num_seqs(fp):
-    op = subprocess.run(['/usr/bin/grep','-c',">",fp.name],stdout = subprocess.PIPE)
-    return(int(op.stdout.decode()))
+    op = subprocess.check_output(['/usr/bin/grep','-c',">",fp.name])
+    return(int(op.decode()))
 # Read in all the sequences into memory
 #
 
